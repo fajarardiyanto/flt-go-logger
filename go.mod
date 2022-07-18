@@ -1,4 +1,4 @@
-module github.com/fajarardiyanto/flt-go-logger
+module gitlab.com/fajardiyanto/flt-go-logger
 
 go 1.17
 

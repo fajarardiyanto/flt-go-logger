@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/fajarardiyanto/flt-go-logger/lib"
+	"gitlab.com/fajardiyanto/flt-go-logger/lib"
 )
 
 type Message struct {

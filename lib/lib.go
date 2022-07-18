@@ -1,8 +1,8 @@
 package lib
 
 import (
-	"github.com/fajarardiyanto/flt-go-logger/interfaces"
 	"github.com/sirupsen/logrus"
+	"gitlab.com/fajardiyanto/flt-go-logger/interfaces"
 	"path"
 	"runtime"
 	"strings"
