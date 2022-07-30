@@ -4,17 +4,17 @@ Faltar Logger use [Logger v1.8.1](https://github.com/sirupsen/logrus) as logging
 
 ### Installation
 ```sh
-go get gitlab.com/fajardiyanto/flt-go-logger
+go get github.com/fajarardiyanto/flt-go-logger
 ```
 
 ###### Upgrading to the latest version
 ```sh
-go get -u gitlab.com/fajardiyanto/flt-go-logger
+go get -u github.com/fajarardiyanto/flt-go-logger
 ```
 
 ###### Upgrade or downgrade with tag version if available
 ```sh
-go get -u gitlab.com/fajardiyanto/flt-go-logger@v1.0.0
+go get -u github.com/fajarardiyanto/flt-go-logger@v1.0.0
 ```
 
 ### Usage
@@ -22,7 +22,7 @@ go get -u gitlab.com/fajardiyanto/flt-go-logger@v1.0.0
 package main
 
 import (
-	"gitlab.com/fajardiyanto/flt-go-logger/lib"
+	"github.com/fajarardiyanto/flt-go-logger/lib"
 )
 
 type Message struct {
@@ -30,12 +30,12 @@ type Message struct {
 }
 
 func main() {
-	logger := lib.NewLib().Init()
-	logger.SetFormat("text").SetReportCaller(true)
-	logger.Info(Message{
-		msg: "Also working with map struct",
+	logger := lib.NewLib()
+	logger.Init("Testing modules")
+	logger.Debug("Lorem Ipsum is simply dummy text of the printing and typesetting %s.", "industry")
+	logger.Info(map[string]interface{}{
+		"name": "Flt Go Logger",
 	})
-	logger.Info("Simple testing logger")
 }
 
 ```
