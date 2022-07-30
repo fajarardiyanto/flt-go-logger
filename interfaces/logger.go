@@ -1,60 +1,30 @@
 package interfaces
 
+// Logger modules interface, using for dynamic modules
 type Logger interface {
 	// Create New Logger Object
 	New() Logger
-
 	// New Modules init
-	// namespace is service name
-	Init() Logger
-
-	// Set logger output format, text or json,
-	// Use `text` for Text Formatter,
-	// Use `json` for JSON Formater
-	SetFormat(format string) Logger
-
-	// Set Logging File
-	SetLevel(level string) Logger
-
-	// Flag for whether to log caller info (off by default)
-	SetReportCaller(reportCaller bool)
-
-	// InfoLevel level. General operational entries about what's going on inside the application,
-	// And auto parsing message struct to json
-	Info(msg interface{}, opts ...interface{}) Logger
-
-	// InfoLevel level. General operational entries about what's going on inside the application,
-	Infof(msg string, opts ...interface{}) Logger
-
-	// WarnLevel level. Non-critical entries that deserve eyes.
-	// And auto parsing message struct to json
-	Warn(msg interface{}, opts ...interface{}) Logger
-
-	// WarnLevel level. Non-critical entries that deserve eyes.
-	Warnf(msg string, opts ...interface{}) Logger
-
-	// DebugLevel level. Usually only enabled when debugging. Very verbose logging.
-	// And auto parsing message struct to json
-	Debug(msg interface{}, opts ...interface{}) Logger
-
-	// DebugLevel level. Usually only enabled when debugging. Very verbose logging.
-	Debugf(msg string, opts ...interface{}) Logger
-
-	// ErrorLevel level. Logs. Used for errors that should definitely be noted.
-	// Commonly used for hooks to send errors to an error tracking service.
-	// And auto parsing message struct to json
-	Error(msg interface{}, opts ...interface{}) Logger
-
-	// ErrorLevel level. Logs. Used for errors that should definitely be noted.
-	// Commonly used for hooks to send errors to an error tracking service.
-	Errorf(msg string, opts ...interface{}) Logger
-
-	// FatalLevel level. Logs and then calls `logger.Exit(1)`. It will exit even if the
-	// logging level is set to Panic.
-	// And auto parsing message struct to json
-	Fatal(msg interface{}, opts ...interface{}) Logger
-
-	// FatalLevel level. Logs and then calls `logger.Exit(1)`. It will exit even if the
-	// logging level is set to Panic.
-	Fatalf(msg string, opts ...interface{}) Logger
+	// namespace is service name, and version is service version
+	Init(namespace string)
+	// Set Logging Level, see LogLevel options
+	SetLogLevel(level DebugLevel)
+	// Get Current Log Level
+	GetLogLevel() (level DebugLevel)
+	// Parsing logger message object to string format
+	ParsingLog(msg LoggerMessage) (raw string)
+	// Same format with fmt.Sprint
+	Trace(format interface{}, input ...interface{})
+	// Same format with fmt.Sprint
+	Debug(format interface{}, input ...interface{})
+	// Same format with fmt.Sprint
+	Info(format interface{}, input ...interface{})
+	// Same format with fmt.Sprint
+	Warning(format interface{}, input ...interface{})
+	// Same format with fmt.Sprint
+	Success(format interface{}, input ...interface{})
+	// Same format with fmt.Sprint
+	Error(format interface{}, input ...interface{}) Logger
+	// Force Exit application
+	Quit()
 }

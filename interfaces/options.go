@@ -2,12 +2,88 @@ package interfaces
 
 import (
 	"encoding/json"
-	"github.com/sirupsen/logrus"
 	"path/filepath"
-	"reflect"
 	"runtime"
 	"strings"
+	"time"
 )
+
+type LogLevel int
+
+const (
+	LogLevelTrace LogLevel = iota + 1
+	LogLevelDebug
+	LogLevelNotice
+	LogLevelInfo
+	LogLevelWarning
+	LogLevelError
+	LogLevelSuccess
+)
+
+type DebugLevel int
+
+const (
+	DebugLevelTrace DebugLevel = iota + 1
+	DebugLevelVerbose
+	DebugLevelInfo
+	DebugLevelWarning
+	DebugLevelError
+)
+
+func GetDebugLevelFromString(level string) DebugLevel {
+	switch strings.ToLower(level) {
+	case "trace":
+		return DebugLevelTrace
+	case "verbose":
+		return DebugLevelVerbose
+	case "info":
+		return DebugLevelInfo
+	case "warning":
+		return DebugLevelWarning
+	case "error":
+		return DebugLevelError
+
+	}
+
+	return -1
+}
+
+var levelstring = map[LogLevel]string{
+	LogLevelTrace:   "TRACE",
+	LogLevelDebug:   "DEBUG",
+	LogLevelInfo:    "INFO",
+	LogLevelWarning: "WARN",
+	LogLevelError:   "ERROR",
+	LogLevelSuccess: "SUCCESS",
+}
+
+func GetLogLevelString(level LogLevel) string {
+	return levelstring[level]
+}
+
+var levelPrintstring = map[LogLevel]string{
+	LogLevelTrace:   "TRACE",
+	LogLevelDebug:   "DEBUG",
+	LogLevelInfo:    "INFO",
+	LogLevelWarning: "WARN",
+	LogLevelError:   "ERROR",
+	LogLevelSuccess: "SUCCESS",
+}
+
+func GetLogLevelPrintString(level LogLevel) string {
+	return levelPrintstring[level]
+}
+
+type LoggerMessage struct {
+	ID        string      `json:"id"`
+	Level     LogLevel    `json:"level"`
+	LevelName string      `json:"levelName"`
+	File      string      `json:"file"`
+	Line      int         `json:"line"`
+	FuncName  string      `json:"funcName"`
+	Time      time.Time   `json:"time"`
+	Message   interface{} `json:"message"`
+}
 
 type Caller struct {
 	File       string `json:"file"`
@@ -42,32 +118,4 @@ func GetCaller(skip int) (cs Caller) {
 	}
 
 	return cs
-}
-
-func GetFields(m interface{}, opts []interface{}) (logrus.Fields, []interface{}) {
-	fields := logrus.Fields{}
-	var interfaces []interface{}
-	if m != nil {
-		interfaces = append(interfaces, m)
-	}
-
-	if opts != nil {
-		for _, values := range opts {
-			if values == nil {
-				continue
-			}
-
-			tValues := reflect.ValueOf(values)
-			switch tValues.Kind() {
-			case reflect.Map:
-				for _, k := range tValues.MapKeys() {
-					fields[k.String()] = tValues.MapIndex(k).Interface()
-				}
-			default:
-				interfaces = append(interfaces, values)
-			}
-		}
-	}
-
-	return fields, interfaces
 }

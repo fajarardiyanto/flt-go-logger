@@ -1,18 +1,20 @@
 package main
 
 import (
+	"gitlab.com/fajardiyanto/flt-go-logger/interfaces"
 	"gitlab.com/fajardiyanto/flt-go-logger/lib"
 )
 
-type Message struct {
-	msg string
+func main() {
+	logger := lib.NewLib()
+	logger.Init("Testing modules")
+	loggerOutput(logger)
 }
 
-func main() {
-	l := lib.NewLib().Init()
-	l.SetFormat("text").SetReportCaller(true)
-	l.Info(Message{
-		msg: "Also working with map struct",
+func loggerOutput(logger interfaces.Logger) {
+	logger.Info("Lorem Ipsum is simply dummy text of the printing and typesetting %s.", "industry")
+	logger.Debug("Lorem Ipsum is simply dummy text of the printing and typesetting %s.", "industry")
+	logger.Info(map[string]interface{}{
+		"name": "Flt Go Logger",
 	})
-	l.Info("Simple testing logger")
 }
