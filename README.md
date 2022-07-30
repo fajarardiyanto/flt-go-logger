@@ -1,6 +1,6 @@
 ### Go Module Logger
 Logger modules
-Faltar Logger use [Logger v1.8.1](github.com/sirupsen/logrus) as logging backend. 
+Faltar Logger use [Logger v1.8.1](https://github.com/sirupsen/logrus) as logging backend. 
 
 ### Installation
 ```sh

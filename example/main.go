@@ -1,8 +1,8 @@
 package main
 
 import (
-	"gitlab.com/fajardiyanto/flt-go-logger/interfaces"
-	"gitlab.com/fajardiyanto/flt-go-logger/lib"
+	"github.com/fajarardiyanto/flt-go-logger/interfaces"
+	"github.com/fajarardiyanto/flt-go-logger/lib"
 )
 
 func main() {
