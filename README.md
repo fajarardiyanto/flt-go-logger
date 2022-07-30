@@ -4,17 +4,17 @@ Faltar Logger use [Logger v1.8.1](github.com/sirupsen/logrus) as logging backend
 
 ### Installation
 ```sh
-go get github.com/fajarardiyanto/flt-go-logger
+go get gitlab.com/fajardiyanto/flt-go-logger
 ```
 
 ###### Upgrading to the latest version
 ```sh
-go get -u github.com/fajarardiyanto/flt-go-logger
+go get -u gitlab.com/fajardiyanto/flt-go-logger
 ```
 
 ###### Upgrade or downgrade with tag version if available
 ```sh
-go get -u github.com/fajarardiyanto/flt-go-logger@v1.0.0
+go get -u gitlab.com/fajardiyanto/flt-go-logger@v1.0.0
 ```
 
 ### Usage
@@ -22,7 +22,7 @@ go get -u github.com/fajarardiyanto/flt-go-logger@v1.0.0
 package main
 
 import (
-	"github.com/fajarardiyanto/flt-go-logger/lib"
+	"gitlab.com/fajardiyanto/flt-go-logger/lib"
 )
 
 type Message struct {
