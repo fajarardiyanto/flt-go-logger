@@ -21,11 +21,6 @@ type Modules struct {
 	writer    io.Writer
 }
 
-func (c *Modules) Error(format interface{}, input ...interface{}) interfaces.Logger {
-	//TODO implement me
-	panic("implement me")
-}
-
 func NewLib() interfaces.Logger {
 	return &Modules{
 		level: interfaces.DebugLevelVerbose,
@@ -69,6 +64,11 @@ func (c *Modules) Warning(format interface{}, input ...interface{}) {
 
 func (c *Modules) Success(format interface{}, input ...interface{}) {
 	fmt.Println(c.ParsingLog(c.createMsg(interfaces.LogLevelSuccess, interfaces.GetCaller(2), format, input)))
+}
+
+func (c *Modules) Error(format interface{}, input ...interface{}) interfaces.Logger {
+	fmt.Println(c.ParsingLog(c.createMsg(interfaces.LogLevelError, interfaces.GetCaller(2), format, input)))
+	return c
 }
 
 func (c *Modules) createMsg(
