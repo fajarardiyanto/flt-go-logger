@@ -92,6 +92,13 @@ type Caller struct {
 	FnameShort string `json:"-"`
 }
 
+type OutputFormat int
+
+const (
+	OutputFormatDefault OutputFormat = iota + 1
+	OutputFormatJSON
+)
+
 func (c Caller) String() string {
 	bs, _ := json.Marshal(c)
 	return string(bs)

@@ -12,18 +12,22 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"strings"
 	"time"
 )
 
 type Modules struct {
-	namespace string
-	level     interfaces.DebugLevel
-	writer    io.Writer
+	namespace    string
+	level        interfaces.DebugLevel
+	writer       io.Writer
+	outputFormat interfaces.OutputFormat
+	onLogger     func(string)
 }
 
 func NewLib() interfaces.Logger {
 	return &Modules{
-		level: interfaces.DebugLevelVerbose,
+		outputFormat: interfaces.OutputFormatDefault,
+		level:        interfaces.DebugLevelVerbose,
 	}
 }
 
@@ -69,6 +73,10 @@ func (c *Modules) Success(format interface{}, input ...interface{}) {
 func (c *Modules) Error(format interface{}, input ...interface{}) interfaces.Logger {
 	fmt.Println(c.ParsingLog(c.createMsg(interfaces.LogLevelError, interfaces.GetCaller(2), format, input)))
 	return c
+}
+
+func (c *Modules) SetOutputFormat(op interfaces.OutputFormat) {
+	c.outputFormat = op
 }
 
 func (c *Modules) createMsg(
@@ -154,12 +162,51 @@ func (c *Modules) ParsingLog(msg interfaces.LoggerMessage) (raw string) {
 
 	}
 
-	raw = fmt.Sprintf("[%s][%s][%s][%d] %s",
-		gchalk.Magenta(msg.Time.Format("2006-01-02 15:04:05")),
-		ems, gchalk.BrightCyan(filepath.Base(msg.FuncName)),
-		msg.Line,
-		vms)
-	return raw
+	switch c.outputFormat {
+	case interfaces.OutputFormatDefault:
+		raw = fmt.Sprintf("[%s][%s][%s][%d] %s",
+			gchalk.Magenta(msg.Time.Format("2006-01-02 15:04:05")),
+			ems, gchalk.BrightCyan(filepath.Base(msg.FuncName)),
+			msg.Line,
+			vms)
+
+		return raw
+	case interfaces.OutputFormatJSON:
+		jsonout := make(map[string]interface{})
+		jsonout["logid"] = msg.ID
+		jsonout["level"] = strings.ToLower(msg.LevelName)
+		jsonout["time"] = msg.Time.Format("2006-01-02T15:04:05.000-0700")
+
+		jsonout["caller"] = fmt.Sprintf("%s:%d", msg.File, msg.Line)
+
+		vv := reflect.TypeOf(msg.Message)
+		switch vv.Kind() {
+		case reflect.String:
+			jsonout["message"] = msg.Message
+		case reflect.Map:
+			if vals, ok := msg.Message.(map[string]interface{}); ok {
+				for kk, vv := range vals {
+					jsonout[kk] = vv
+				}
+			} else if vals, ok := msg.Message.(map[string]string); ok {
+				for kk, vv := range vals {
+					jsonout[kk] = vv
+				}
+			} else {
+				jsonout["message"] = msg.Message
+			}
+		default:
+			jsonout["message"] = msg.Message
+		}
+
+		var ssd string
+		if val, err := json.Marshal(jsonout); err == nil {
+			ssd = string(val)
+		}
+		return ssd
+	default:
+		return ""
+	}
 }
 
 func (c *Modules) Quit() {

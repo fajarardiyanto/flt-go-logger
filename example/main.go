@@ -8,6 +8,7 @@ import (
 func main() {
 	logger := lib.NewLib()
 	logger.Init("Testing modules")
+	logger.SetOutputFormat(interfaces.OutputFormatJSON)
 	loggerOutput(logger)
 }
 

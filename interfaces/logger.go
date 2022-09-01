@@ -11,6 +11,8 @@ type Logger interface {
 	SetLogLevel(level DebugLevel)
 	// Get Current Log Level
 	GetLogLevel() (level DebugLevel)
+	// Set logger output format, default or json
+	SetOutputFormat(OutputFormat)
 	// Parsing logger message object to string format
 	ParsingLog(msg LoggerMessage) (raw string)
 	// Same format with fmt.Sprint
