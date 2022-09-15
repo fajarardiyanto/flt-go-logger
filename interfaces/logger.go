@@ -1,5 +1,7 @@
 package interfaces
 
+import "log"
+
 // Logger modules interface, using for dynamic modules
 type Logger interface {
 	// Create New Logger Object
@@ -27,6 +29,8 @@ type Logger interface {
 	Success(format interface{}, input ...interface{})
 	// Same format with fmt.Sprint
 	Error(format interface{}, input ...interface{}) Logger
+	// System loger
+	NewSystemLogger() *log.Logger
 	// Force Exit application
 	Quit()
 }

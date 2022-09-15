@@ -223,3 +223,9 @@ func (c *Modules) Write(p []byte) (int, error) {
 	}
 	return len(p), nil
 }
+
+func (c *Modules) NewSystemLogger() *log.Logger {
+	logs := log.New(c, "", log.LstdFlags)
+	logs.SetFlags(log.Flags() &^ (log.Ldate | log.Ltime))
+	return logs
+}
